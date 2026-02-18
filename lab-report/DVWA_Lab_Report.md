@@ -56,22 +56,22 @@ The application passes user-supplied input directly into a SQL query without san
 **Step 2:** Enter the following payload in the User ID field:
 
 ```
-' OR '1'='1
+' OR 1=1-- -
 ```
 
 **Step 3:** Click Submit. The application returns **all user records** from the database instead of a single result — confirming the injection is successful.
 
+**Screenshot — All Users Dumped:**  
+![SQLi All Users](../screenshots/sqli/sqli-all-users.png)
+
 **Step 4:** To enumerate database users and password hashes, enter:
 
 ```
-' UNION SELECT user, password FROM users#
+' UNION SELECT user, password FROM users-- -
 ```
 
-**Screenshot — Payload Input:**  
-`[INSERT: screenshots/sqli/sqli-payload-input.png]`
-
-**Screenshot — Dumped User Records:**  
-`[INSERT: screenshots/sqli/sqli-all-users-dumped.png]`
+**Screenshot — Dumped Password Hashes:**  
+![SQLi Hashes](../screenshots/sqli/sqli-hashes.png)
 
 #### Impact
 - Full extraction of all user credentials (usernames + MD5 hashes)
@@ -110,11 +110,11 @@ The application reflects user-supplied input directly into the HTML response wit
 
 **Step 3:** Click Submit. The browser executes the script and displays an alert popup — confirming the payload was reflected and executed without sanitization.
 
-**Screenshot — Payload Input:**  
-`[INSERT: screenshots/xss/xss-payload-input.png]`
-
 **Screenshot — Alert Popup Executing:**  
-`[INSERT: screenshots/xss/xss-alert-popup.png]`
+![XSS Alert Popup](../screenshots/xss/xss-alert-popup.png)
+
+**Screenshot — Payload Input & Page Response:**  
+![XSS Payload Input](../screenshots/xss/xss-payload-input.png)
 
 #### Impact
 - Session token theft via `document.cookie` exfiltration
@@ -160,14 +160,11 @@ The application passes user input directly to an OS-level command (`ping`) witho
 127.0.0.1 && ls /var/www/html
 ```
 
-**Screenshot — Payload Input:**  
-`[INSERT: screenshots/command-injection/cmdi-payload-input.png]`
-
-**Screenshot — whoami Output:**  
-`[INSERT: screenshots/command-injection/cmdi-whoami-output.png]`
+**Screenshot — whoami Output (RCE confirmed):**  
+![Command Injection whoami](../screenshots/command-injection/cmdi-whoami.png)
 
 **Screenshot — Directory Listing:**  
-`[INSERT: screenshots/command-injection/cmdi-ls-output.png]`
+![Command Injection ls](../screenshots/command-injection/cmdi-ls.png)
 
 #### Impact
 - Full Remote Code Execution as the web server user
